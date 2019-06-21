@@ -9,10 +9,10 @@ public class index {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		readFile();
+		sortEnrollees();
 	}
 
-	public static void readFile() {
+	public static void sortEnrollees() {
 
 		// Scanner scanner = new Scanner("enrollees.csv");
 		Scanner scan = new Scanner(System.in);
@@ -24,7 +24,7 @@ public class index {
 
 			try {
 				file = new Scanner(new File(fileName));
-				System.out.println("File Found!");
+				System.out.println("File " + fileName +" Found!");
 				break;
 
 			} catch (FileNotFoundException e) {
@@ -101,7 +101,7 @@ public class index {
 					String[] innerDataNext = companyArrayList.get(inner - 1).split(",");
 					String innerNameNext = innerDataNext[1];
 					
-					if(innerName.compareToIgnoreCase(innerNameNext) > 0) {
+					if(innerNameNext.compareToIgnoreCase(innerName) > 0) {
 						String temp = companyArrayList.get(inner);
 						
 						companyArrayList.set(inner, companyArrayList.get(inner -1));
@@ -118,10 +118,11 @@ public class index {
 			String path =  path1 + name + ".csv"; 
 			
 			FileWriter fW;
+			int success = -1;
 			//create file new file writer and file
 			try {
 				
-				// fW = new FileWriter(path);
+				
 				 File file1 = new File(path1);
 				 if(!file1.isDirectory()) {
 					 file1.mkdir();
@@ -130,23 +131,26 @@ public class index {
 				 
 				 fW = new FileWriter(file2);
 				 fW.append("User ID,First and Last Name,Version,Insurance Company");
-				 fW.append("\n");
+				 fW.append("\r\n");
 				 
 				 for(int i = 0; i < companyArrayList.size(); i++) {
 					 String addLine = companyArrayList.get(i);
 					 fW.append(addLine);
-					 fW.append("\n");
+					 fW.append("\r\n");
 				 }
 				 
 				 fW.close();
+				 success = 0;
 			} catch (IOException e) {
 				System.out.println("could not create file: " + path);
 			}
-			
-	//	System.out.println("file: " + path + " created.");
+			if(success == 0) {
+				System.out.println("file: " + path + " created.");
+			}
+		
 			
 		}
 
-		
+		scan.close();
 	}
 }
