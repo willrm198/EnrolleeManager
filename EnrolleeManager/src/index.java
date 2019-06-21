@@ -44,9 +44,9 @@ public class index {
 		
 		ArrayList<String> companies = new ArrayList<String>();
 		String line;
-		int x = 1;
+		
 		// get insurance companies
-		while(!fileLines.isEmpty()) {
+		for(int x = 1; x < fileLines.size(); x++) {
 			line = fileLines.get(x);
 			String[] data = line.split(",");
 			String insCompany = data[3]; 
@@ -72,7 +72,7 @@ public class index {
 			}
 			x++;
 		}
-//		
+		
 		// for each insurance company found, create a csv file and populate with corresponding enrollees
 		for(int j = 0; j < companies.size(); j++) {
 			
@@ -80,7 +80,10 @@ public class index {
 			for(String fLine : fileLines) {
 				String[] fLineData = fLine.split(",");
 				
-				if(fLineData[3] == companies.get(j)) {
+				String fLineCompany = fLineData[3];
+				String company = companies.get(j);
+				
+				if(fLineCompany.compareToIgnoreCase(company) == 0) {
 					
 					companyArrayList.add(fLine);
 					
@@ -111,22 +114,36 @@ public class index {
 			
 			//name for csv file
 			String name = companies.get(j);
-			name = name.concat(".csv");
+			String path1 = "C:\\EnrolleeManager\\" ;
+			String path =  path1 + name + ".csv"; 
 			
 			FileWriter fW;
 			//create file new file writer and file
 			try {
-				 fW = new FileWriter(name);
+				
+				// fW = new FileWriter(path);
+				 File file1 = new File(path1);
+				 if(!file1.isDirectory()) {
+					 file1.mkdir();
+				 }
+				 File file2 = new File(path);
+				 
+				 fW = new FileWriter(file2);
 				 fW.append("User ID,First and Last Name,Version,Insurance Company");
+				 fW.append("\n");
 				 
 				 for(int i = 0; i < companyArrayList.size(); i++) {
-					 fW.append(companyArrayList.get(i));
+					 String addLine = companyArrayList.get(i);
+					 fW.append(addLine);
+					 fW.append("\n");
 				 }
+				 
+				 fW.close();
 			} catch (IOException e) {
-				System.out.println("could not create file: " + name);
+				System.out.println("could not create file: " + path);
 			}
 			
-		
+	//	System.out.println("file: " + path + " created.");
 			
 		}
 
